@@ -1,4 +1,6 @@
 {
+  "name": "movies",
+  "private": true,
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
@@ -6,6 +8,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "font-awesome": "^4.7.0",
     "vue": "^3.0.5",
     "wave-ui": "^2.22.0"
   },
