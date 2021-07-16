@@ -44,27 +44,41 @@
 
     <w-tabs :items="[{ title: 'Listing' }, { title: 'HTML Table' }]">
       <template #item-content.1>
-        <DirList @updatePath="updatePath"></DirList>
+        <the-dir-list @updatePath="updatePath" />
       </template>
       <template #item-content.2>
-        <TableList @updatePath="updatePath"></TableList>
+        <the-table-list @updatePath="updatePath" />
       </template>
     </w-tabs>
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
-import DirList from "./DirList.vue";
-import TableList from "./TableList.vue";
+import { reactive, onBeforeMount, provide } from "vue";
+import TheDirList from "./TheDirList.vue";
+import TheTableList from "./TheTableList.vue";
+import { data as dirListData } from "../mock/dirList";
+const state = reactive({
+  path: "",
+  items: [],
+});
+provide("state", state); // make available to other components
+
+onBeforeMount(() => {
+  // load last used path and request info from api
+  // get data and save to state
+  updateStateData(dirListData);
+});
+
+function updateStateData(newData) {
+  if (newData.path === state.path) return;
+  state.path = newData.path;
+  state.items = newData.items;
+}
 
 const updatePath = (value) => {
   state.path = value;
 };
-
-const state = reactive({
-  path: "",
-});
 </script>
 
 <style scoped>
