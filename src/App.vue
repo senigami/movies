@@ -1,6 +1,6 @@
 <template>
   <w-app>
-    <MovieSorter></MovieSorter>
+    <MovieSorter />
   </w-app>
 </template>
 
