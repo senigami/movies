@@ -39,7 +39,7 @@
 
     <div>
       <label for="path">Directory Path</label>
-      <input type="text" id="path" :value="state.path" />
+      <input type="text" id="path" :value="path" @change="updatePath" />
     </div>
 
     <w-tabs :items="[{ title: 'Listing' }, { title: 'HTML Table' }]">
@@ -54,30 +54,28 @@
 </template>
 
 <script setup>
-import { reactive, onBeforeMount, provide } from "vue";
+import { onBeforeMount, computed, toRef } from "vue";
+import { useStore } from "vuex";
+
 import TheDirList from "./TheDirList.vue";
 import TheTableList from "./TheTableList.vue";
-import { data as dirListData } from "../mock/dirList";
-const state = reactive({
-  path: "",
-  items: [],
-});
-provide("state", state); // make available to other components
+
+const newPath = toRef("");
+const store = useStore();
+const path = computed(() => store.state.path);
 
 onBeforeMount(() => {
   // load last used path and request info from api
   // get data and save to state
-  updateStateData(dirListData);
+  updatePath();
 });
 
-function updateStateData(newData) {
-  if (newData.path === state.path) return;
-  state.path = newData.path;
-  state.items = newData.items;
-}
-
-const updatePath = (value) => {
-  state.path = value;
+const updatePath = (e) => {
+  let newPath = "";
+  if (e) newPath = e.target.value;
+  store.dispatch("updatePath", {
+    path: newPath,
+  });
 };
 </script>
 
