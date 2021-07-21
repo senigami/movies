@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>Table Listing:</h3>
-    <w-table :headers="table.headers" :items="table.items">
+    <w-table :headers="table.headers" :items="listItems">
       <template #item-cell.rating="{ label, item }">
         <w-tooltip right>
           <template #activator="{ on }">
@@ -35,8 +35,10 @@
 </template>
   
   <script setup>
-import { reactive, onMounted, inject } from "vue";
-const dirInfo = inject("state", { path: "", items: [] });
+import { reactive, computed } from "vue";
+import { useStore } from "vuex";
+const store = useStore();
+const listItems = computed(() => store.state.items);
 
 const table = reactive({
   headers: [
@@ -52,10 +54,6 @@ const table = reactive({
     { label: "GB", key: "gigs" },
   ],
   items: [],
-});
-
-onMounted(() => {
-  table.items = dirInfo.items;
 });
 </script>
   

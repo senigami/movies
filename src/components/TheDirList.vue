@@ -1,30 +1,21 @@
 <template>
   <div>
     <h3>Directory Listing:</h3>
-    <w-table :headers="table.headers" :items="table.items"> </w-table>
+    <w-table :headers="table.headers" :items="listItems"> </w-table>
   </div>
 </template>
 
 <script setup>
-import { reactive, onMounted, inject, watch } from "vue";
+import { reactive, computed } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+const listItems = computed(() => store.state.items);
 
 const table = reactive({
   headers: [{ label: "Title", key: "title" }],
   items: [],
 });
-const dirInfo = inject("state", { path: "", items: [] });
-
-onMounted(() => {
-  table.items = dirInfo.items;
-});
-
-// watch(
-//       () => dirInfo.path,
-//       (newValue, oldValue) => {
-//         if (newValue != oldValue) console.log('data changed',newValue, oldValue);
-//       },
-//       { immediate: true }
-//     );
 </script>
 
 <style scoped>
